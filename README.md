@@ -6,10 +6,17 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 # conver.go
 - X2String 任意对象转换成字符串
 
+# encoding.go
+- GbkToUtf8 字符串编码gbk->utf-8
+- Utf8ToGbk 字符串编码utf-8->gbk
+
 # random.go
 - XRandomInt 生成指定长度的随机数字字符串
 - XRandomString 生成指定长度的随机字符串
 - XRandomIntRange 生成指定区间的整数随机数
+
+# slice.go
+- XIsInSlice 判断元素item是否在切片内
 
 # time.go
 - XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用，格式：200601021504050000
@@ -34,6 +41,9 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 # aliyunsms
 阿里云SMS短信服务相关
 
+# ~~comstring~~
+
+> discard
 # ebi
 
 > 电银支付相关
@@ -46,6 +56,7 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
       - ~~WX_NATIVE~~
       - ~~AL_NATIVE~~
       - ~~WX_JSAPI~~
+      - ...
     - ~~订单查询~~
-    - ~~ ... ~~
+    - ...
 
