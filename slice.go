@@ -11,11 +11,11 @@ import (
 //
 // parent 切片对象
 //
-func XIsInSlice(item interface{}, parent interface{}) (in bool, err error) {
+func XIsInSlice(item interface{}, parent interface{}) (isExist bool, err error) {
 	t := reflect.TypeOf(parent)
 	v := reflect.ValueOf(parent)
 	if t.Kind() != reflect.Slice {
-		return in, fmt.Errorf("%s", "parent参数错误,应该传入slice")
+		return isExist, fmt.Errorf("%s", "parent参数错误,应该传入slice")
 	}
 	for i := 0; i < v.Len(); i++ {
 		if reflect.DeepEqual(item, v.Index(i).Interface()) {
