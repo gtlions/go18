@@ -148,7 +148,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 		}
 	}
 	if rsp.WcPayData != "" {
-		if err = json.Unmarshal([]byte(rsp.WcPayData), &rsp.WxPayData); err != nil {
+		if err = json.Unmarshal([]byte(rsp.WcPayData), &rsp.WechatPayData); err != nil {
 			return rsp, err
 		}
 		rsp.WcPayData = ""

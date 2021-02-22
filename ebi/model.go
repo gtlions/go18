@@ -190,7 +190,7 @@ type UnifiedOrderResponse struct {
 	// 微信支付返回数据
 	WcPayData string `json:"wcPayData,omitempty"`
 	// 微信支付返回数据
-	WxPayData *WcPayData `json:"wxPayData,omitempty"`
+	WechatPayData *WechatPayData `json:"wechatPayData,omitempty"`
 	// 银联流水号
 	Tn string `json:"tn,omitempty"`
 	// 证书序列号
@@ -204,7 +204,8 @@ type UnifiedOrderResponse struct {
 	PayUrl   string `json:"payUrl,omitempty"`
 }
 
-type WcPayData struct {
+// WechatPayData 微信支付信息响应
+type WechatPayData struct {
 	// 应用ID
 	AppID string `json:"appId,omitempty"`
 	// 从业机构号
