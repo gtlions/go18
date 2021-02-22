@@ -118,7 +118,7 @@ func (c *Client) UnifiedOrder(bm map[string]string) (rsp EbiResponse, err error)
 	defer resp.Body.Close()
 	rspBody, _ := ioutil.ReadAll(resp.Body)
 	s := ""
-	utf8, err := gbkToUtf8(rspBody)
+	utf8, err := gos10i.GbkToUtf8(rspBody)
 	if err != nil {
 		return rsp, err
 	} else {
@@ -184,7 +184,7 @@ func (c *Client) QueryOrder(bm map[string]string) (rsp EbiResponse, err error) {
 	req, _ := client.PostForm(BASEURL, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
 	s := ""
-	utf8, err := gbkToUtf8(rspBody)
+	utf8, err := gos10i.GbkToUtf8(rspBody)
 	if err != nil {
 		return rsp, err
 	} else {
