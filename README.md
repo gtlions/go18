@@ -36,16 +36,14 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 - XZeroTime 0点时间
 
 # aliyunoss
-阿里云OSS存储相关
+> 阿里云OSS存储相关
 
 # aliyunsms
-阿里云SMS短信服务相关
+> 阿里云SMS短信服务相关
 
 # ~~comstring~~
-
 > discard
 # ebi
-
 > 电银支付相关
 
 - UnifiedOrder 支付统一下单
@@ -60,3 +58,5 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
     - ~~订单查询~~
     - ...
 
+# tenxunloc
+> 腾讯位置服务
