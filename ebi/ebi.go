@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -22,7 +23,7 @@ const TIMEOUT = 15
 //
 // bm 提交的数据
 //
-func (c *Client) UnifiedOrder(bm BodyMap) (rsp EbiResponse, err error) {
+func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) {
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
@@ -129,11 +130,19 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp EbiResponse, err error) {
 	}
 	urlRsp := "http://127.0.0.1?" + s
 	qryRsp, err := url.Parse(urlRsp)
+	if err != nil {
+		return rsp, err
+	}
+	if c.Debug {
+		log.Println("qryRsp.Query:", qryRsp.Query())
+	}
 	var decoder = schema.NewDecoder()
 	err = decoder.Decode(&rsp, qryRsp.Query())
-	fmt.Println("qryRsp.Query:", qryRsp.Query())
 	if err != nil {
 		// return rsp, err
+		if c.Debug {
+			log.Println("schema.NewDecoder->err:", err)
+		}
 		if err = json.Unmarshal(rspBody, &rsp); err != nil {
 			return rsp, err
 		}
@@ -159,7 +168,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp EbiResponse, err error) {
 //
 // bm 提交的数据
 //
-func (c *Client) QueryOrder(bm BodyMap) (rsp EbiResponse, err error) {
+func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
@@ -202,10 +211,19 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp EbiResponse, err error) {
 	}
 	urlRsp := "http://127.0.0.1?" + s
 	qryRsp, err := url.Parse(urlRsp)
+	if err != nil {
+		return rsp, err
+	}
+	if c.Debug {
+		log.Println("qryRsp.Query:", qryRsp.Query())
+	}
 	var decoder = schema.NewDecoder()
 	err = decoder.Decode(&rsp, qryRsp.Query())
 	if err != nil {
 		// return rsp, err
+		if c.Debug {
+			log.Println("schema.NewDecoder->err:", err)
+		}
 		if err = json.Unmarshal(rspBody, &rsp); err != nil {
 			return rsp, err
 		}
@@ -223,7 +241,7 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp EbiResponse, err error) {
 //
 // bm 提交的数据
 //
-func (c *Client) UnifiedOrderDiscard(bm map[string]string) (rsp EbiResponse, err error) {
+func (c *Client) UnifiedOrderDiscard(bm map[string]string) (rsp UnifiedOrderResponse, err error) {
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
@@ -353,7 +371,7 @@ func (c *Client) UnifiedOrderDiscard(bm map[string]string) (rsp EbiResponse, err
 //
 // bm 提交的数据
 //
-func (c *Client) QueryOrderDiscard(bm map[string]string) (rsp EbiResponse, err error) {
+func (c *Client) QueryOrderDiscard(bm map[string]string) (rsp UnifiedOrderResponse, err error) {
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}

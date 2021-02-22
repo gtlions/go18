@@ -17,7 +17,8 @@ import (
 )
 
 type Client struct {
-	init bool `json:"init,omitempty"`
+	Debug bool `json:"debug"`
+	init  bool `json:"-"`
 	// 超时
 	TimeOut int `json:"time_out,omitempty"`
 	// 服务器证书文件
@@ -152,7 +153,8 @@ func (c *Client) signDiscard(data map[string]string) (map[string]string, error) 
 	return data, nil
 }
 
-type EbiResponse struct {
+// UnifiedOrderResponse 订单接口请求响应
+type UnifiedOrderResponse struct {
 	// 返回状态码
 	RspCode string `json:"rspCode,omitempty"`
 	// 返回信息
@@ -175,31 +177,14 @@ type EbiResponse struct {
 	MerchantID string `json:"merchantId,omitempty"`
 	// 商户订单号
 	OrderID string `json:"orderId,omitempty"`
-	// 请求号
-	RequestID string `json:"requestId,omitempty"`
 	// 订单日期
 	OrderTime string `json:"orderTime,omitempty"`
+	// 请求号
+	RequestID string `json:"requestId,omitempty"`
 	// 支付流水号
 	TradeNO string `json:"tradeNo,omitempty"`
 	// 交易金额
 	TransAmt string `json:"transAmt,omitempty"`
-	// 交易状态 S-成功,P-交易失败,P-交易处理中
-	TransState string `json:"transState,omitempty"`
-	// 支付完成时间
-	PayTime string `json:"payTime,omitempty"`
-	//
-	PromotionDetail string `json:"promotionDetail,omitempty"`
-	// 清算日期
-	SettleDate string `json:"settleDate,omitempty"`
-	// 签名
-	SettleTransAmt string `json:"settleTransAmt,omitempty"`
-	// 通道流水号
-	ChannelNo string `json:"channelNo,omitempty"`
-	// 证书序列号
-	CertID string `json:"certId,omitempty"`
-	// 交易手续费
-	FeeAmt string `json:"feeAmt,omitempty"`
-	PayUrl string `json:"payUrl,omitempty"`
 	// 支付二维码连接
 	PayInfo string `json:"payInfo,omitempty"`
 	// 微信支付返回数据
@@ -208,12 +193,15 @@ type EbiResponse struct {
 	WxPayData *WcPayData `json:"wxPayData,omitempty"`
 	// 银联流水号
 	Tn string `json:"tn,omitempty"`
+	// 证书序列号
+	CertID string `json:"certId,omitempty"`
 	// 扩展信息
 	ExtendInfo string `json:"extendInfo,omitempty"`
 	// 小程序ID
 	JsAppID string `json:"jsAppId,omitempty"`
 	// 小程序地址
 	JsAppUrl string `json:"jsAppUrl,omitempty"`
+	PayUrl   string `json:"payUrl,omitempty"`
 }
 
 type WcPayData struct {
@@ -271,4 +259,88 @@ func pkcs12DecodeAll(pfxFileName string, password string) ([]interface{}, []*x50
 		}
 	}
 	return privateKeys, certificates, err
+}
+
+// QueryOrderResponse 订单查询接口响应
+type QueryOrderResponse struct {
+	// 返回状态码
+	RspCode string `json:"rspCode,omitempty"`
+	// 返回信息
+	RspMessage string `json:"rspMessage,omitempty"`
+	// 字符集
+	Charset string `json:"charset,omitempty"`
+	// 接口版本
+	Version string `json:"version,omitempty"`
+	// 签名类型
+	SignType string `json:"signType,omitempty"`
+	// 服务器证书
+	ServerCert string `json:"serverCert,omitempty"`
+	// 服务器签名
+	ServerSign string `json:"serverSign,omitempty"`
+	// 交易接口
+	Service string `json:"service,omitempty"`
+	// 商户订单号
+	OrderID string `json:"orderId,omitempty"`
+	// 订单日期
+	OrderTime string `json:"orderTime,omitempty"`
+	// 支付流水号
+	TradeNO string `json:"tradeNo,omitempty"`
+	// 商户号
+	MerchantID string `json:"merchantId,omitempty"`
+	// 交易金额
+	TransAmt string `json:"transAmt,omitempty"`
+	// 交易状态 S-成功,P-交易失败,P-交易处理中
+	TransState string `json:"transState,omitempty"`
+	// 支付完成时间
+	PayTime string `json:"payTime,omitempty"`
+	// 清算日期
+	SettleDate string `json:"settleDate,omitempty"`
+	// 签名
+	SettleTransAmt string `json:"settleTransAmt,omitempty"`
+	// 通道流水号
+	ChannelNo string `json:"channelNo,omitempty"`
+	// 证书序列号
+	CertID string `json:"certId,omitempty"`
+	// 扩展信息
+	ExtendInfo string `json:"extendInfo,omitempty"`
+	// 交易手续费
+	FeeAmt string `json:"feeAmt,omitempty"`
+	//
+	PromotionDetail string `json:"promotionDetail,omitempty"`
+}
+
+// 支付回调接口响应
+type NotifyResponse struct {
+	// 字符集
+	Charset string `json:"charset,omitempty"`
+	// 接口版本
+	Version string `json:"version,omitempty"`
+	// 签名类型
+	SignType string `json:"signType,omitempty"`
+	// 服务器证书
+	ServerCert string `json:"serverCert,omitempty"`
+	// 服务器签名
+	ServerSign string `json:"serverSign,omitempty"`
+	// 商户订单号
+	OrderID string `json:"orderId,omitempty"`
+	// 支付流水号
+	TradeNO string `json:"tradeNo,omitempty"`
+	// 商户号
+	MerchantID string `json:"merchantId,omitempty"`
+	// 交易金额
+	TransAmt string `json:"transAmt,omitempty"`
+	// 交易状态 S-成功,P-交易失败,P-交易处理中
+	TransState string `json:"transState,omitempty"`
+	// 支付完成时间
+	PayTime string `json:"payTime,omitempty"`
+	// 商户私有域
+	BackParam string `json:"backParam,omitempty"`
+	// 通道流水号
+	ChannelNo string `json:"channelNo,omitempty"`
+	// 清算日期
+	SettleDate string `json:"settleDate,omitempty"`
+	// 证书序列号
+	CertID string `json:"certId,omitempty"`
+	// 扩展信息
+	ExtendInfo string `json:"extendInfo,omitempty"`
 }
