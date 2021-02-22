@@ -1,12 +1,23 @@
 # localTest*
-localTest*.go
-localtest*.go
-localOnly*.go
-localonly*.go
-testLocal*.go
-testlocal*.go
-onlyLocal*.go
-onlylocal*.go
+*localtest*.go
+*localTest*.go
+*Localtest*.go
+*LocalTest*.go
+
+*testlocal*.go
+*testLocal*.go
+*Testlocal*.go
+*TestLocal*.go
+
+*localonly*.go
+*localOnly*.go
+*Localonly*.go
+*LocalOnly*.go
+
+*onlylocal*.go
+*onlyLocal*.go
+*Onlylocal*.go
+*OnlyLocal*.go
 
 #CERT PFX
 *.pfx
