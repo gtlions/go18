@@ -100,6 +100,46 @@ func (c *Client) sign(data map[string]string) (map[string]string, error) {
 	return data, nil
 }
 
+// sign 电银支付请求数据加密、签名
+//
+// data 请求参数
+//
+func (c *Client) sign1(bm BodyMap) (BodyMap, error) {
+	var (
+		err           error
+		encryptedData []byte
+		privateKeys   []interface{}
+		certificates  []*x509.Certificate
+	)
+	s := make([]string, len(bm))
+	for k := range bm {
+		s = append(s, k)
+	}
+	sort.Strings(s)
+	str := ""
+	enc := mahonia.NewEncoder("GBK")
+	for _, v := range s {
+		if bm.Get(v) == "" || v == "serverSign" || v == "serverCert" {
+			continue
+		}
+		if str != "" {
+			str += "&"
+		}
+		str += v + "=" + enc.ConvertString(bm.Get(v))
+	}
+	if privateKeys, certificates, err = pkcs12DecodeAll(c.Pfx, c.PfxPasswd); err != nil {
+		return nil, err
+	}
+	hash := sha256.New()
+	hash.Write([]byte(str))
+	if encryptedData, err = rsa.SignPKCS1v15(rand.Reader, privateKeys[0].(*rsa.PrivateKey), crypto.SHA256, hash.Sum(nil)); err != nil {
+		return nil, err
+	}
+	bm["merchantSign"] = strings.ToUpper(hex.EncodeToString(encryptedData))
+	bm["merchantCert"] = strings.ToUpper(hex.EncodeToString(certificates[0].Raw))
+	return bm, nil
+}
+
 type EbiResponse struct {
 	RspCode         string    `json:"rspCode,omitempty"`
 	RspMessage      string    `json:"rspMessage,omitempty"`
