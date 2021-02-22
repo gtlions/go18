@@ -97,7 +97,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp EbiResponse, err error) {
 		}
 		bm.Set("subAppId", c.SubAppID)
 	}
-	bm, err = c.sign1(bm)
+	bm, err = c.sign(bm)
 	if err != nil {
 		return rsp, err
 	}
@@ -131,11 +131,18 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp EbiResponse, err error) {
 	qryRsp, err := url.Parse(urlRsp)
 	var decoder = schema.NewDecoder()
 	err = decoder.Decode(&rsp, qryRsp.Query())
+	fmt.Println("qryRsp.Query:", qryRsp.Query())
 	if err != nil {
 		// return rsp, err
 		if err = json.Unmarshal(rspBody, &rsp); err != nil {
 			return rsp, err
 		}
+	}
+	if rsp.WcPayData != "" {
+		if err = json.Unmarshal([]byte(rsp.WcPayData), &rsp.WxPayData); err != nil {
+			return rsp, err
+		}
+		rsp.WcPayData = ""
 	}
 	rsp.Charset = ""
 	rsp.Version = ""
@@ -175,14 +182,14 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp EbiResponse, err error) {
 		bm.Set("service", "DirectOrderSearch")
 	}
 	bm.Set("merchantId", c.MerchantID)
-	bm, err = c.sign1(bm)
+	bm, err = c.sign(bm)
 	if err != nil {
 		return rsp, err
 	}
 	client := &http.Client{}
 	urlValues := url.Values{}
-	for k, v := range bm {
-		urlValues.Add(k, v.(string))
+	for k := range bm {
+		urlValues.Add(k, bm.Get(k))
 	}
 	req, _ := client.PostForm(BASEURL, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
@@ -291,7 +298,7 @@ func (c *Client) UnifiedOrderDiscard(bm map[string]string) (rsp EbiResponse, err
 		}
 		bm["subAppId"] = c.SubAppID
 	}
-	bm, err = c.sign(bm)
+	bm, err = c.signDiscard(bm)
 	if err != nil {
 		return rsp, err
 	}
@@ -369,7 +376,7 @@ func (c *Client) QueryOrderDiscard(bm map[string]string) (rsp EbiResponse, err e
 		bm["service"] = "DirectOrderSearch"
 	}
 	bm["merchantId"] = c.MerchantID
-	bm, err = c.sign(bm)
+	bm, err = c.signDiscard(bm)
 	if err != nil {
 		return rsp, err
 	}

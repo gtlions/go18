@@ -17,19 +17,31 @@ import (
 )
 
 type Client struct {
-	init         bool   `json:"init,omitempty"`
-	TimeOut      int    `json:"time_out,omitempty"`
-	Pfx          string `json:"pfx,omitempty"`
-	PfxPasswd    string `json:"pfxPasswd,omitempty"`
-	Charset      string `json:"charset,omitempty"`
-	Version      string `json:"version,omitempty"`
-	SignType     string `json:"signType,omitempty"`
+	init bool `json:"init,omitempty"`
+	// 超时
+	TimeOut int `json:"time_out,omitempty"`
+	// 服务器证书文件
+	Pfx string `json:"pfx,omitempty"`
+	// 服务器证书密码
+	PfxPasswd string `json:"pfxPasswd,omitempty"`
+	// 字符集
+	Charset string `json:"charset,omitempty"`
+	// 版本
+	Version string `json:"version,omitempty"`
+	// 签名方式
+	SignType string `json:"signType,omitempty"`
+	// 服务器签名
 	MerchantSign string `json:"merchantSign,omitempty"`
+	// 服务器证书
 	MerchantCert string `json:"merchantCert,omitempty"`
-	Service      string `json:"service,omitempty"`
-	MerchantID   string `json:"merchantId,omitempty"`
-	SubAppID     string `json:"subAppId,omitempty"`
-	Currency     string `json:"currency,omitempty"`
+	// 交易接口
+	Service string `json:"service,omitempty"`
+	// 商户号
+	MerchantID string `json:"merchantId,omitempty"`
+	// 子商户公众账号ID
+	SubAppID string `json:"subAppId,omitempty"`
+	// 币种
+	Currency string `json:"currency,omitempty"`
 }
 
 // Init 电银支付客户端初始化
@@ -64,47 +76,7 @@ func (c *Client) isInit() (bool, error) {
 //
 // data 请求参数
 //
-func (c *Client) sign(data map[string]string) (map[string]string, error) {
-	var (
-		err           error
-		encryptedData []byte
-		privateKeys   []interface{}
-		certificates  []*x509.Certificate
-	)
-	s := make([]string, len(data))
-	for k := range data {
-		s = append(s, k)
-	}
-	sort.Strings(s)
-	str := ""
-	enc := mahonia.NewEncoder("GBK")
-	for _, v := range s {
-		if data[v] == "" || v == "serverSign" || v == "serverCert" {
-			continue
-		}
-		if str != "" {
-			str += "&"
-		}
-		str += v + "=" + enc.ConvertString(data[v])
-	}
-	if privateKeys, certificates, err = pkcs12DecodeAll(c.Pfx, c.PfxPasswd); err != nil {
-		return nil, err
-	}
-	hash := sha256.New()
-	hash.Write([]byte(str))
-	if encryptedData, err = rsa.SignPKCS1v15(rand.Reader, privateKeys[0].(*rsa.PrivateKey), crypto.SHA256, hash.Sum(nil)); err != nil {
-		return nil, err
-	}
-	data["merchantSign"] = strings.ToUpper(hex.EncodeToString(encryptedData))
-	data["merchantCert"] = strings.ToUpper(hex.EncodeToString(certificates[0].Raw))
-	return data, nil
-}
-
-// sign 电银支付请求数据加密、签名
-//
-// data 请求参数
-//
-func (c *Client) sign1(bm BodyMap) (BodyMap, error) {
+func (c *Client) sign(bm BodyMap) (BodyMap, error) {
 	var (
 		err           error
 		encryptedData []byte
@@ -140,48 +112,127 @@ func (c *Client) sign1(bm BodyMap) (BodyMap, error) {
 	return bm, nil
 }
 
+// signDiscard 电银支付请求数据加密、签名
+//
+// data 请求参数
+//
+func (c *Client) signDiscard(data map[string]string) (map[string]string, error) {
+	var (
+		err           error
+		encryptedData []byte
+		privateKeys   []interface{}
+		certificates  []*x509.Certificate
+	)
+	s := make([]string, len(data))
+	for k := range data {
+		s = append(s, k)
+	}
+	sort.Strings(s)
+	str := ""
+	enc := mahonia.NewEncoder("GBK")
+	for _, v := range s {
+		if data[v] == "" || v == "serverSign" || v == "serverCert" {
+			continue
+		}
+		if str != "" {
+			str += "&"
+		}
+		str += v + "=" + enc.ConvertString(data[v])
+	}
+	if privateKeys, certificates, err = pkcs12DecodeAll(c.Pfx, c.PfxPasswd); err != nil {
+		return nil, err
+	}
+	hash := sha256.New()
+	hash.Write([]byte(str))
+	if encryptedData, err = rsa.SignPKCS1v15(rand.Reader, privateKeys[0].(*rsa.PrivateKey), crypto.SHA256, hash.Sum(nil)); err != nil {
+		return nil, err
+	}
+	data["merchantSign"] = strings.ToUpper(hex.EncodeToString(encryptedData))
+	data["merchantCert"] = strings.ToUpper(hex.EncodeToString(certificates[0].Raw))
+	return data, nil
+}
+
 type EbiResponse struct {
-	RspCode         string    `json:"rspCode,omitempty"`
-	RspMessage      string    `json:"rspMessage,omitempty"`
-	Charset         string    `json:"charset,omitempty"`
-	Version         string    `json:"version,omitempty"`
-	SignType        string    `json:"signType,omitempty"`
-	ServerCert      string    `json:"serverCert,omitempty"`
-	ServerSign      string    `json:"serverSign,omitempty"`
-	Service         string    `json:"service,omitempty"`
-	TradeType       string    `json:"tradeType,omitempty"`
-	MerchantID      string    `json:"merchantId,omitempty"`
-	OrderID         string    `json:"orderId,omitempty"`
-	RequestID       string    `json:"requestId,omitempty"`
-	OrderTime       string    `json:"orderTime,omitempty"`
-	TradeNO         string    `json:"tradeNo,omitempty"`
-	TransAmt        string    `json:"transAmt,omitempty"`
-	TransState      string    `json:"transState,omitempty"`
-	PayTime         string    `json:"payTime,omitempty"`
-	PromotionDetail string    `json:"promotionDetail,omitempty"`
-	SettleDate      string    `json:"settleDate,omitempty"`
-	SettleTransAmt  string    `json:"settleTransAmt,omitempty"`
-	ChannelNo       string    `json:"channelNo,omitempty"`
-	CertID          string    `json:"certId,omitempty"`
-	FeeAmt          string    `json:"feeAmt,omitempty"`
-	PayUrl          string    `json:"pay_url,omitempty"`
-	PayInfo         string    `json:"payInfo,omitempty"`
-	WcPayData       WcPayData `json:"wcPayData,omitempty"`
-	Tn              string    `json:"tn,omitempty"`
-	ExtendInfo      string    `json:"extendInfo,omitempty"`
-	JsAppID         string    `json:"jsAppId,omitempty"`
-	JsAppUrl        string    `json:"jsAppUrl,omitempty"`
+	// 返回状态码
+	RspCode string `json:"rspCode,omitempty"`
+	// 返回信息
+	RspMessage string `json:"rspMessage,omitempty"`
+	// 字符集
+	Charset string `json:"charset,omitempty"`
+	// 接口版本
+	Version string `json:"version,omitempty"`
+	// 签名类型
+	SignType string `json:"signType,omitempty"`
+	// 服务器证书
+	ServerCert string `json:"serverCert,omitempty"`
+	// 服务器签名
+	ServerSign string `json:"serverSign,omitempty"`
+	// 交易接口
+	Service string `json:"service,omitempty"`
+	// 交易类型
+	TradeType string `json:"tradeType,omitempty"`
+	// 商户号
+	MerchantID string `json:"merchantId,omitempty"`
+	// 商户订单号
+	OrderID string `json:"orderId,omitempty"`
+	// 请求号
+	RequestID string `json:"requestId,omitempty"`
+	// 订单日期
+	OrderTime string `json:"orderTime,omitempty"`
+	// 支付流水号
+	TradeNO string `json:"tradeNo,omitempty"`
+	// 交易金额
+	TransAmt string `json:"transAmt,omitempty"`
+	// 交易状态 S-成功,P-交易失败,P-交易处理中
+	TransState string `json:"transState,omitempty"`
+	// 支付完成时间
+	PayTime string `json:"payTime,omitempty"`
+	//
+	PromotionDetail string `json:"promotionDetail,omitempty"`
+	// 清算日期
+	SettleDate string `json:"settleDate,omitempty"`
+	// 签名
+	SettleTransAmt string `json:"settleTransAmt,omitempty"`
+	// 通道流水号
+	ChannelNo string `json:"channelNo,omitempty"`
+	// 证书序列号
+	CertID string `json:"certId,omitempty"`
+	// 交易手续费
+	FeeAmt string `json:"feeAmt,omitempty"`
+	PayUrl string `json:"payUrl,omitempty"`
+	// 支付二维码连接
+	PayInfo string `json:"payInfo,omitempty"`
+	// 微信支付返回数据
+	WcPayData string `json:"wcPayData,omitempty"`
+	// 微信支付返回数据
+	WxPayData *WcPayData `json:"wxPayData,omitempty"`
+	// 银联流水号
+	Tn string `json:"tn,omitempty"`
+	// 扩展信息
+	ExtendInfo string `json:"extendInfo,omitempty"`
+	// 小程序ID
+	JsAppID string `json:"jsAppId,omitempty"`
+	// 小程序地址
+	JsAppUrl string `json:"jsAppUrl,omitempty"`
 }
 
 type WcPayData struct {
-	AppID     string `json:"appId,omitempty"`
+	// 应用ID
+	AppID string `json:"appId,omitempty"`
+	// 从业机构号
 	PartnerID string `json:"partnerId,omitempty"`
-	PrepayID  string `json:"prepayId,omitempty"`
-	Package   string `json:"package,omitempty"`
-	NonceStr  string `json:"nonceStr,omitempty"`
+	// 预支付交易会话ID
+	PrepayID string `json:"prepayId,omitempty"`
+	// 订单详情扩展字符串
+	Package string `json:"package,omitempty"`
+	// 随机字符串
+	NonceStr string `json:"nonceStr,omitempty"`
+	// 时间戳
 	TimeStamp string `json:"timeStamp,omitempty"`
-	PaySign   string `json:"paySign,omitempty"`
-	SignType  string `json:"signType,omitempty"`
+	// 签名
+	PaySign string `json:"paySign,omitempty"`
+	// 签名方式
+	SignType string `json:"signType,omitempty"`
 }
 
 // pkcs12DecodeAll 解析pfx证书
