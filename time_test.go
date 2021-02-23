@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+func TestXMonthDayCnt(t *testing.T) {
+	when := time.Now()
+	t.Log(XMonthDayCnt(when))
+}
 func TestXXNowString(t *testing.T) {
 	t.Log(XOrderNoFromNow())
 }

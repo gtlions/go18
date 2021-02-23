@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+// XMonthDayCnt 当前月份天数
+//
+// when 时间
+//
+func XMonthDayCnt(when time.Time) int {
+	return int((XMonthLast(when).Sub(XMonthFirst(when)).Hours() / 24) + 1)
+}
+
 // XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用
 //
 // 格式 200601021504050000
