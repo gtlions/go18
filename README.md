@@ -2,6 +2,9 @@
 
 gos10i, golang十八般武艺(shibabanwuyi-s10i).
 
+![](sources/sj.jpg)
+
+
 > 《水浒传》言说：史进每日求王教头点拨十八般武艺，一一从头指教。那十八般武艺？矛锤弓弩铳，鞭锏剑链挝，斧钺并戈戟，牌棒与枪杈。
 
 # conver.go
