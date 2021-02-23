@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+func TestXMonthDayList(t *testing.T) {
+	when := time.Now()
+	t.Log(XMonthDayList(when))
+}
+
 func TestXMonthDayCnt(t *testing.T) {
 	when := time.Now()
 	t.Log(XMonthDayCnt(when))

@@ -6,6 +6,18 @@ import (
 	"time"
 )
 
+// XMonthDayList 当前月份日期列表
+//
+// when 时间
+//
+func XMonthDayList(when time.Time) (dayList []string) {
+	for i := 0; i < int((XMonthLast(when).Sub(XMonthFirst(when)).Hours()/24)+1); i++ {
+		dayList = append(dayList, XMonthFirst(when).AddDate(0, 0, i).Format("2006-01-02"))
+	}
+	return
+
+}
+
 // XMonthDayCnt 当前月份天数
 //
 // when 时间

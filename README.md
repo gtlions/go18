@@ -24,6 +24,7 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 
 # time.go
 
+- XMonthDayList 当前月份日期列表
 - XMonthDayCnt 当前月份天数
 - XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用，格式：200601021504050000
 - XChinaMonth 中国月份，「一」~「十二」月
