@@ -310,8 +310,8 @@ type QueryOrderResponse struct {
 	PromotionDetail string `json:"promotionDetail,omitempty"`
 }
 
-// 支付回调接口响应
-type NotifyResponse struct {
+// 支付异步通知的参数
+type NotifyRequest struct {
 	// 字符集
 	Charset string `json:"charset,omitempty"`
 	// 接口版本
