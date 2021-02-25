@@ -19,7 +19,7 @@ import (
 const BASEURL = "http://pay.uat.chinaebi.com:50080/mrpos/cashier"
 const TIMEOUT = 15
 
-// UnifiedOrder 支付统一下单
+// UnifiedOrder 统一下单
 //
 // bm 提交的数据
 //
@@ -27,6 +27,8 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
+	nonceStr := gos10i.XOrderNoFromNow()
+	bm.Set("merchantId", c.MerchantID)
 	if bm.Get("transAmt") == "" {
 		return rsp, fmt.Errorf("缺少必要参数: [ %s ]", "transAmt")
 	} else {
@@ -63,7 +65,6 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	if bm.Get("service") == "" {
 		bm.Set("service", "DowDirectPay")
 	}
-	nonceStr := gos10i.XOrderNoFromNow()
 	if bm.Get("orderId") == "" {
 		bm.Set("orderId", nonceStr)
 	}
@@ -91,7 +92,6 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	if bm.Get("accFlag") == "" {
 		bm.Set("accFlag", "0")
 	}
-	bm.Set("merchantId", c.MerchantID)
 	if bm.Get("subAppId") == "" && bm.Get("transType") == "WX_JSAPI" {
 		if c.SubAppID == "" {
 			return rsp, fmt.Errorf("缺少必要参数 [ subAppId ]")
@@ -164,7 +164,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	return rsp, err
 }
 
-// QueryOrder 支付订单查询
+// QueryOrder 订单查询
 //
 // bm 提交的数据
 //
@@ -172,6 +172,7 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
+	bm.Set("merchantId", c.MerchantID)
 	if bm.Get("orderId") == "" {
 		return rsp, fmt.Errorf("缺少必要参数 [ orderId ]")
 	}
@@ -190,7 +191,97 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 	if bm.Get("service") == "" {
 		bm.Set("service", "DirectOrderSearch")
 	}
+
+	bm, err = c.sign(bm)
+	if err != nil {
+		return rsp, err
+	}
+	client := &http.Client{}
+	urlValues := url.Values{}
+	for k := range bm {
+		urlValues.Add(k, bm.Get(k))
+	}
+	req, _ := client.PostForm(BASEURL, urlValues)
+	rspBody, _ := ioutil.ReadAll(req.Body)
+	s := ""
+	utf8, err := gos10i.GbkToUtf8(rspBody)
+	if err != nil {
+		return rsp, err
+	} else {
+		s = string(utf8)
+	}
+	urlRsp := "http://127.0.0.1?" + s
+	qryRsp, err := url.Parse(urlRsp)
+	if err != nil {
+		return rsp, err
+	}
+	if c.Debug {
+		log.Println("qryRsp.Query:", qryRsp.Query())
+	}
+	var decoder = schema.NewDecoder()
+	err = decoder.Decode(&rsp, qryRsp.Query())
+	if err != nil {
+		// return rsp, err
+		if c.Debug {
+			log.Println("schema.NewDecoder->err:", err)
+		}
+		if err = json.Unmarshal(rspBody, &rsp); err != nil {
+			return rsp, err
+		}
+	}
+	rsp.Charset = ""
+	rsp.Version = ""
+	rsp.SignType = ""
+	rsp.ServerCert = ""
+	rsp.ServerSign = ""
+	rsp.Service = ""
+	return rsp, err
+}
+
+// RefundOrder 订单退款
+//
+// bm 提交的数据
+//
+func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
+	if _, err := c.isInit(); err != nil {
+		return rsp, err
+	}
+	nonceStr := gos10i.XOrderNoFromNow()
 	bm.Set("merchantId", c.MerchantID)
+	if bm.Get("charset") == "" {
+		bm.Set("charset", "00")
+	}
+	if bm.Get("version") == "" {
+		bm.Set("version", "1.0")
+	}
+	if bm.Get("signType") == "" {
+		bm.Set("signType", "RSA")
+	}
+	if bm.Get("service") == "" {
+		bm.Set("service", "DYRefund")
+	}
+	if bm.Get("orderId") == "" {
+		return rsp, fmt.Errorf("缺少必要参数 [ orderId ]")
+	}
+	if bm.Get("refundAmount") == "" {
+		return rsp, fmt.Errorf("缺少必要参数 [ refundAmount ]")
+	}
+	if bm.Get("requestId") == "" {
+		bm.Set("requestId", nonceStr)
+	}
+	if bm.Get("refundId") == "" {
+		bm.Set("refundId", nonceStr)
+	}
+	if bm.Get("offlineNotifyUrl") == "" {
+		return rsp, fmt.Errorf("缺少必要参数 [ offlineNotifyUrl ]")
+	}
+	if bm.Get("clientIP") == "" {
+		bm.Set("clientIP", "127.0.0.1")
+	}
+	if bm.Get("requestId") == "" {
+		return rsp, fmt.Errorf("缺少必要参数 [ requestId ]")
+	}
+
 	bm, err = c.sign(bm)
 	if err != nil {
 		return rsp, err

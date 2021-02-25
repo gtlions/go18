@@ -51,6 +51,33 @@ func TestQueryOrder(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	if rsp.TransState != "S" {
+		t.Logf("成功")
+	}
+	r, _ := json.MarshalIndent(rsp, "", "	")
+	t.Logf("\n\n%s\n\n", string(r))
+}
+
+func TestRefundOrder(t *testing.T) {
+	client := Client{}
+	client.TimeOut = 5
+	client.Pfx = "merchant.pfx"
+	client.PfxPasswd = "PfxPasswd"
+	client.MerchantID = "MerchantID"
+	err := client.Init()
+	if err != nil {
+		t.Error(err)
+	}
+	bm := make(BodyMap)
+	bm.Set("orderId", "orderId")
+	bm.Set("requestId", "requestId")
+	rsp, err := client.RefundOrder(bm)
+	if err != nil {
+		t.Error(err)
+	}
+	if rsp.Status != "S" {
+		t.Logf("成功")
+	}
 	r, _ := json.MarshalIndent(rsp, "", "	")
 	t.Logf("\n\n%s\n\n", string(r))
 }

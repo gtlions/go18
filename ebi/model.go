@@ -345,3 +345,49 @@ type NotifyRequest struct {
 	// 扩展信息
 	ExtendInfo string `json:"extendInfo,omitempty"`
 }
+
+// RefundOrderResponse 订单退款接口响应
+type RefundOrderResponse struct {
+	// 返回状态码
+	RspCode string `json:"rspCode,omitempty"`
+	// 返回信息
+	RspMessage string `json:"rspMessage,omitempty"`
+	// 字符集
+	Charset string `json:"charset,omitempty"`
+	// 接口版本
+	Version string `json:"version,omitempty"`
+	// 签名类型
+	SignType string `json:"signType,omitempty"`
+	// 服务器证书
+	ServerCert string `json:"serverCert,omitempty"`
+	// 服务器签名
+	ServerSign string `json:"serverSign,omitempty"`
+	// 交易接口
+	Service string `json:"service,omitempty"`
+	// 支付流水号
+	TradeNO string `json:"tradeNo,omitempty"`
+	// 商户号
+	MerchantID string `json:"merchantId,omitempty"`
+	// 商户订单号
+	OrderID string `json:"orderId,omitempty"`
+	// 退款订单号
+	RefundID string `json:"refundId,omitempty"`
+	// 退款时间
+	RefundDate string `json:"refundDate,omitempty"`
+	// 状态 S-退款成功,P-交易处理中,F-退款失败
+	Status string `json:"status,omitempty"`
+	// 退款失败原因
+	FailReason string `json:"failReason,omitempty"`
+	// 交易金额
+	RefundAmount int `json:"refundAmount,omitempty"`
+	// 证书序列号
+	CertID string `json:"certId,omitempty"`
+	// 后台回调地址
+	OfflineNotifyUrl string `json:"offlineNotifyUrl,omitempty"`
+	// 客户端 IP
+	ClientIP string `json:"clientIP,omitempty"`
+	// 商户私有域
+	BackParam string `json:"backParam,omitempty"`
+	// 扩展信息
+	ExtendInfo string `json:"extendInfo,omitempty"`
+}
