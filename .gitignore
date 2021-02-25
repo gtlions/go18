@@ -1,35 +1,35 @@
 # localTest*
-localtest
-localTest
-Localtest
-LocalTest
+*localtest*
+*localTest*
+*Localtest*
+*LocalTest*
 *localtest*.go
 *localTest*.go
 *Localtest*.go
 *LocalTest*.go
 
-testlocal
-testLocal
-Testlocal
-TestLocal
+*testlocal*
+*testLocal*
+*Testlocal*
+*TestLocal*
 *testlocal*.go
 *testLocal*.go
 *Testlocal*.go
 *TestLocal*.go
 
-localonly
-localOnly
-Localonly
-LocalOnly
+*localonly*
+*localOnly*
+*Localonly*
+*LocalOnly*
 *localonly*.go
 *localOnly*.go
 *Localonly*.go
 *LocalOnly*.go
 
-onlylocal
-onlyLocal
-Onlylocal
-OnlyLocal
+*onlylocal*
+*onlyLocal*
+*Onlylocal*
+*OnlyLocal*
 *onlylocal*.go
 *onlyLocal*.go
 *Onlylocal*.go
