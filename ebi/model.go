@@ -349,9 +349,9 @@ type NotifyRequest struct {
 // RefundOrderResponse 订单退款接口响应
 type RefundOrderResponse struct {
 	// 返回状态码
-	RspCode string `json:"rspCode,omitempty"`
+	ReturnCode string `json:"returnCode,omitempty"`
 	// 返回信息
-	RspMessage string `json:"rspMessage,omitempty"`
+	ReturnMessage string `json:"returnMessage,omitempty"`
 	// 字符集
 	Charset string `json:"charset,omitempty"`
 	// 接口版本

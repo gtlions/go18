@@ -107,6 +107,13 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	for k := range bm {
 		urlValues.Add(k, enc.ConvertString(bm.Get(k)))
 	}
+	if c.Debug {
+		s, err := json.MarshalIndent(bm, "", "	")
+		if err != nil {
+			log.Println("MarshalIndent Request urlValues err:", err)
+		}
+		log.Println("Request Values:", string(s))
+	}
 	client := http.DefaultClient
 	if c.TimeOut > 0 {
 		client.Timeout = time.Second * time.Duration(c.TimeOut)
@@ -134,14 +141,18 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 		return rsp, err
 	}
 	if c.Debug {
-		log.Println("qryRsp.Query:", qryRsp.Query())
+		s, err := json.MarshalIndent(qryRsp.Query(), "", "	")
+		if err != nil {
+			log.Println("MarshalIndent Response Values err:", err)
+		}
+		log.Println("Response Values:", string(s))
 	}
 	var decoder = schema.NewDecoder()
 	err = decoder.Decode(&rsp, qryRsp.Query())
 	if err != nil {
 		// return rsp, err
 		if c.Debug {
-			log.Println("schema.NewDecoder->err:", err)
+			log.Println("Decoder Response Values Error:", err)
 		}
 		if err = json.Unmarshal(rspBody, &rsp); err != nil {
 			return rsp, err
@@ -201,6 +212,13 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 	for k := range bm {
 		urlValues.Add(k, bm.Get(k))
 	}
+	if c.Debug {
+		s, err := json.MarshalIndent(bm, "", "	")
+		if err != nil {
+			log.Println("MarshalIndent Request urlValues err:", err)
+		}
+		log.Println("Request Values:", string(s))
+	}
 	req, _ := client.PostForm(BASEURL, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
 	s := ""
@@ -216,14 +234,18 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 		return rsp, err
 	}
 	if c.Debug {
-		log.Println("qryRsp.Query:", qryRsp.Query())
+		s, err := json.MarshalIndent(qryRsp.Query(), "", "	")
+		if err != nil {
+			log.Println("MarshalIndent Response Values err:", err)
+		}
+		log.Println("Response Values:", string(s))
 	}
 	var decoder = schema.NewDecoder()
 	err = decoder.Decode(&rsp, qryRsp.Query())
 	if err != nil {
 		// return rsp, err
 		if c.Debug {
-			log.Println("schema.NewDecoder->err:", err)
+			log.Println("Decoder Response Values Error:", err)
 		}
 		if err = json.Unmarshal(rspBody, &rsp); err != nil {
 			return rsp, err
@@ -281,7 +303,6 @@ func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 	if bm.Get("requestId") == "" {
 		return rsp, fmt.Errorf("缺少必要参数 [ requestId ]")
 	}
-
 	bm, err = c.sign(bm)
 	if err != nil {
 		return rsp, err
@@ -290,6 +311,13 @@ func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 	urlValues := url.Values{}
 	for k := range bm {
 		urlValues.Add(k, bm.Get(k))
+	}
+	if c.Debug {
+		s, err := json.MarshalIndent(bm, "", "	")
+		if err != nil {
+			log.Println("MarshalIndent Request urlValues err:", err)
+		}
+		log.Println("Request Values:", string(s))
 	}
 	req, _ := client.PostForm(BASEURL, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
@@ -306,14 +334,18 @@ func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 		return rsp, err
 	}
 	if c.Debug {
-		log.Println("qryRsp.Query:", qryRsp.Query())
+		s, err := json.MarshalIndent(qryRsp.Query(), "", "	")
+		if err != nil {
+			log.Println("MarshalIndent Response Values err:", err)
+		}
+		log.Println("Response Values:", string(s))
 	}
 	var decoder = schema.NewDecoder()
 	err = decoder.Decode(&rsp, qryRsp.Query())
 	if err != nil {
 		// return rsp, err
 		if c.Debug {
-			log.Println("schema.NewDecoder->err:", err)
+			log.Println("Decoder Response Values Error:", err)
 		}
 		if err = json.Unmarshal(rspBody, &rsp); err != nil {
 			return rsp, err
