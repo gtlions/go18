@@ -16,7 +16,9 @@ import (
 	"github.com/gtlions/gos10i"
 )
 
-const BASEURL = "http://pay.uat.chinaebi.com:50080/mrpos/cashier"
+const BASEURLTest = "http://pay.uat.chinaebi.com:50080/mrpos/cashier"
+const BASEURLProd = "https://pay.chinaebi.com/mrpos/cashier"
+
 const TIMEOUT = 15
 
 // UnifiedOrder 统一下单
@@ -24,6 +26,11 @@ const TIMEOUT = 15
 // bm 提交的数据
 //
 func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) {
+	baseUrl := ""
+	baseUrl = BASEURLTest
+	if c.IsProd {
+		baseUrl = BASEURLProd
+	}
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
@@ -120,7 +127,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	} else {
 		client.Timeout = time.Second * TIMEOUT
 	}
-	req, _ := http.NewRequest("POST", BASEURL, strings.NewReader(urlValues.Encode()))
+	req, _ := http.NewRequest("POST", baseUrl, strings.NewReader(urlValues.Encode()))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := client.Do(req)
 	if err != nil {
@@ -180,6 +187,11 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 // bm 提交的数据
 //
 func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
+	baseUrl := ""
+	baseUrl = BASEURLTest
+	if c.IsProd {
+		baseUrl = BASEURLProd
+	}
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
@@ -219,7 +231,7 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 		}
 		log.Println("Request Values:", string(s))
 	}
-	req, _ := client.PostForm(BASEURL, urlValues)
+	req, _ := client.PostForm(baseUrl, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
 	s := ""
 	utf8, err := gos10i.GbkToUtf8(rspBody)
@@ -265,6 +277,11 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 // bm 提交的数据
 //
 func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
+	baseUrl := ""
+	baseUrl = BASEURLTest
+	if c.IsProd {
+		baseUrl = BASEURLProd
+	}
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
@@ -319,7 +336,7 @@ func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 		}
 		log.Println("Request Values:", string(s))
 	}
-	req, _ := client.PostForm(BASEURL, urlValues)
+	req, _ := client.PostForm(baseUrl, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
 	s := ""
 	utf8, err := gos10i.GbkToUtf8(rspBody)

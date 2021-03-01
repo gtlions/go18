@@ -17,8 +17,9 @@ import (
 )
 
 type Client struct {
-	Debug bool `json:"debug"`
-	init  bool `json:"-"`
+	Debug  bool `json:"debug"`
+	IsProd bool `json:"is_prod"`
+	init   bool `json:"-"`
 	// 超时
 	TimeOut int `json:"time_out,omitempty"`
 	// 服务器证书文件
