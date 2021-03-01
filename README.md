@@ -62,16 +62,19 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 > 电银支付相关
 
 - UnifiedOrder 支付统一下单
+    > ParseNotify 解析支付异步通知的参数
 - QueryOrder 支付订单查询
+- RefundOrder 订单退款
+    > ParseRefuncNotify 解析退款异步通知的参数
 
-    TODO
-    - ~~统一下单~~
-      - ~~WX_NATIVE~~
-      - ~~AL_NATIVE~~
-      - ~~WX_JSAPI~~
-      - ...
-    - ~~订单查询~~
-    - 订单退款
+TODO
+- ~~统一下单~~
+    - ~~WX_NATIVE~~
+    - ~~AL_NATIVE~~
+    - ~~WX_JSAPI~~
+    - ...
+- ~~订单查询~~
+- ~~订单退款~~
 
 # tenxunloc
 

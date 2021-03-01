@@ -391,3 +391,37 @@ type RefundOrderResponse struct {
 	// 扩展信息
 	ExtendInfo string `json:"extendInfo,omitempty"`
 }
+
+// 退款异步通知的参数
+type NotifyRefundRequest struct {
+	// 字符集
+	Charset string `json:"charset,omitempty"`
+	// 接口版本
+	Version string `json:"version,omitempty"`
+	// 签名类型
+	SignType string `json:"signType,omitempty"`
+	// 服务器证书
+	ServerCert string `json:"serverCert,omitempty"`
+	// 服务器签名
+	ServerSign string `json:"serverSign,omitempty"`
+	// 商户订单号
+	OrderID string `json:"orderId,omitempty"`
+	// 退款订单号
+	RefundID string `json:"refundId,omitempty"`
+	// 支付流水号
+	TradeNO string `json:"tradeNo,omitempty"`
+	// 商户号
+	MerchantID string `json:"merchantId,omitempty"`
+	// 交易金额
+	TransAmt string `json:"transAmt,omitempty"`
+	// 退款时间
+	RefundDate string `json:"refundDate,omitempty"`
+	// 交易状态 S-成功,P-交易失败
+	TransState string `json:"transState,omitempty"`
+	// 商户私有域
+	BackParam string `json:"backParam,omitempty"`
+	// 扩展信息
+	ExtendInfo string `json:"extendInfo,omitempty"`
+	// 支付业务类型
+	PayCapTyp string `json:"payCapTyp,omitempty"`
+}
