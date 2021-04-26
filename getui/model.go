@@ -11,8 +11,8 @@ type AuthSignParam struct {
 }
 
 type AuthSignResp struct {
-	Resp
-	Data AuthSignRespData `json:"data"`
+	*Resp
+	Data *AuthSignRespData `json:"data"`
 }
 type AuthSignRespData struct {
 	Expiretime string `json:"expire_time"`
@@ -27,26 +27,47 @@ type UserAlias struct {
 	Alias string `json:"alias"`
 }
 
-type PushSettings struct {
+type Settings struct {
 	TTL int `json:"ttl"`
 }
-type PushAudience struct {
+type Audience struct {
 	Cid []string `json:"cid"`
 }
-type PushMessageNotification struct {
-	Title     string `json:"title"`
-	Body      string `json:"body"`
-	ClickType string `json:"click_type"`
-	URL       string `json:"url"`
+type Notification struct {
+	Title        string `json:"title,omitempty" form:"title"`
+	Body         string `json:"body,omitempty" form:"body"`
+	BigText      string `json:"big_text,omitempty" form:"big_text"`
+	BigImage     string `json:"big_image,omitempty" form:"big_image"`
+	Logo         string `json:"logo,omitempty" form:"logo"`
+	LogoURL      string `json:"logo_url,omitempty" form:"logo_url"`
+	ChannelID    string `json:"channel_id,omitempty" form:"channel_id"`
+	ChannelName  string `json:"channel_name,omitempty" form:"channel_name"`
+	ChannelLevel int    `json:"channel_level,omitempty" form:"channel_level"`
+	ClickType    string `json:"click_type,omitempty" form:"click_type"`
+	Intent       string `json:"intent,omitempty" form:"intent"`
+	URL          string `json:"url,omitempty" form:"url"`
+	Payload      string `json:"payload,omitempty" form:"payload"`
+	NotifyID     int    `json:"notify_id,omitempty" form:"notify_id"`
+	RingName     string `json:"ring_name,omitempty" form:"ring_name"`
+	DadgeAddNum  int    `json:"badge_add_num,omitempty" form:"dadge_add_num"`
 }
-type PushMessage struct {
-	Notification PushMessageNotification `json:"notification"`
+
+type Revoke struct {
+	OldTaskID string `json:"old_task_id,omitempty" form:"old_task_id"`
+	Force     bool   `json:"force,omitempty" form:"force"`
+}
+
+type Message struct {
+	Duration     string        `json:"duration,omitempty"`
+	Notification *Notification `json:"notification,omitempty"`
+	Transmission string        `json:"transmission,omitempty"`
+	Revoke       *Revoke       `json:"revoke,omitempty"`
 }
 type PushReq struct {
-	RequestID   string       `json:"request_id"`
-	Settings    PushSettings `json:"settings"`
-	Audience    PushAudience `json:"audience"`
-	PushMessage PushMessage  `json:"push_message"`
+	RequestID   string    `json:"request_id"`
+	Settings    *Settings `json:"settings"`
+	Audience    *Audience `json:"audience"`
+	PushMessage *Message  `json:"push_message"`
 }
 
 type PushRespData struct {
@@ -55,8 +76,8 @@ type PushRespData struct {
 }
 
 type PushResp struct {
-	Resp
-	PushRespData
+	*Resp
+	*PushRespData
 }
 
 type GetAliasRespData struct {
@@ -64,6 +85,6 @@ type GetAliasRespData struct {
 }
 
 type GetAliasResp struct {
-	Resp
-	Data GetAliasRespData `json:"data"`
+	*Resp
+	Data *GetAliasRespData `json:"data"`
 }
