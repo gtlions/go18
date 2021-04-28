@@ -57,6 +57,12 @@ type Revoke struct {
 	Force     bool   `json:"force,omitempty" form:"force"`
 }
 
+type TransmissionCst struct {
+	Title   string `json:"title,omitempty" form:"title"`
+	Content string `json:"content,omitempty" form:"content"`
+	Payload string `json:"payload,omitempty" form:"payload"`
+}
+
 type Message struct {
 	Duration     string        `json:"duration,omitempty"`
 	Notification *Notification `json:"notification,omitempty"`
