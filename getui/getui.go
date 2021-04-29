@@ -120,3 +120,26 @@ func PushToSingleCid(config ConfigParam, pushReq PushReq) (rsp Resp, err error) 
 	}
 	return rsp, err
 }
+
+func PushToBatchCid(config ConfigParam, pushReq BatchPush) (rsp Resp, err error) {
+	client := http.DefaultClient
+	payload, _ := json.Marshal(pushReq)
+	req, _ := http.NewRequest("POST", config.baseUrl+"/push/single/batch/cid", bytes.NewBuffer(payload))
+	req.Header.Add("Token", config.AuthSignResp.Data.Token)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Charset", "utf-8")
+	resp, err := client.Do(req)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	rspBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(rspBody, &rsp)
+	if err != nil {
+		return
+	}
+	return rsp, err
+}

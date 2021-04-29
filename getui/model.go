@@ -69,13 +69,17 @@ type Message struct {
 	Transmission string        `json:"transmission,omitempty"`
 	Revoke       *Revoke       `json:"revoke,omitempty"`
 }
+
 type PushReq struct {
 	RequestID   string    `json:"request_id"`
 	Settings    *Settings `json:"settings"`
 	Audience    *Audience `json:"audience"`
 	PushMessage *Message  `json:"push_message"`
 }
-
+type BatchPush struct {
+	IsAsync bool      `json:"is_async,omitempty" form:"is_async"`
+	MsgList []PushReq `json:"msg_list,omitempty" form:"msg_list"`
+}
 type PushRespData struct {
 	TaskID string `json:"task_id"`
 	Status string `json:"status"`
