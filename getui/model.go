@@ -110,8 +110,8 @@ type Android struct {
 }
 
 type Channel struct {
-	IOS     *IOS
-	Android *Android
+	IOS     *IOS     `json:"ios,omitempty" form:"ios"`
+	Android *Android `json:"android,omitempty" form:"android"`
 }
 
 type PushReq struct {
