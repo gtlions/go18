@@ -70,11 +70,56 @@ type Message struct {
 	Revoke       *Revoke       `json:"revoke,omitempty"`
 }
 
+type Alert struct {
+	Title           string   `json:"title,omitempty" form:"title"`
+	Body            string   `json:"body,omitempty" form:"body"`
+	ActionLocKey    string   `json:"action-loc-key,omitempty" form:"action-loc-key"`
+	LocKey          string   `json:"loc-key,omitempty" form:"loc-key"`
+	LocArgs         []string `json:"loc-args,omitempty" form:"loc-args"`
+	LaunchImage     string   `json:"launch-image,omitempty" form:"launch-image"`
+	TitleLocKey     string   `json:"title-loc-key,omitempty" form:"title-loc-key"`
+	TitleLocArgs    []string `json:"title-loc-args,omitempty" form:"title-loc-args"`
+	Subtitle        string   `json:"subtitle,omitempty" form:"subtitle"`
+	SubtitleLocKey  string   `json:"subtitle-loc-key,omitempty" form:"subtitle-loc-key"`
+	SubtitleLocArgs string   `json:"subtitle-loc-args,omitempty" form:"subtitle-loc-args"`
+}
+
+type Aps struct {
+	Alert            *Alert `json:"alert,omitempty" form:"alert"`
+	ContentAvailable int    `json:"content-available" form:"content-available"`
+	Sound            string `json:"sound,omitempty" form:"sound"`
+	Category         string `json:"category,omitempty" form:"category"`
+	ThreadID         string `json:"thread-id,omitempty" form:"thread-id"`
+}
+
+type Multimedia struct {
+	Url      string `json:"url,omitempty" form:"url"`
+	Type     int    `json:"type,omitempty" form:"type"`
+	OnlyWifi bool   `json:"only_wifi,omitempty" form:"only_wifi"`
+}
+
+type IOS struct {
+	Type           string        `json:"type,omitempty" form:"type"`
+	Aps            *Aps          `json:"aps,omitempty" form:"aps"`
+	AutoBadge      string        `json:"auto_badge,omitempty" form:"auto_badge"`
+	Payload        string        `json:"payload,omitempty" form:"payload"`
+	Multimedia     []*Multimedia `json:"multimedia,omitempty" form:"multimedia"`
+	ApnsCollapseID string        `json:"apns-collapse-id,omitempty" form:"apns-collapse-id"`
+}
+type Android struct {
+}
+
+type Channel struct {
+	IOS     *IOS
+	Android *Android
+}
+
 type PushReq struct {
 	RequestID   string    `json:"request_id"`
 	Settings    *Settings `json:"settings"`
 	Audience    *Audience `json:"audience"`
 	PushMessage *Message  `json:"push_message"`
+	PushChannel *Channel  `json:"push_channel"`
 }
 type BatchPush struct {
 	IsAsync bool      `json:"is_async,omitempty" form:"is_async"`
