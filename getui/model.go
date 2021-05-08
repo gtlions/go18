@@ -126,8 +126,8 @@ type BatchPush struct {
 	MsgList []PushReq `json:"msg_list,omitempty" form:"msg_list"`
 }
 type PushRespData struct {
-	TaskID string `json:"task_id"`
-	Status string `json:"status"`
+	TaskID string `json:"task_id,omitempty"`
+	Status string `json:"status,omitempty"`
 }
 
 type PushResp struct {
@@ -136,10 +136,11 @@ type PushResp struct {
 }
 
 type GetAliasRespData struct {
-	Alias string `json:"alias"`
+	Alias string   `json:"alias,omitempty"`
+	Cid   []string `json:"cid,omitempty"`
 }
 
 type GetAliasResp struct {
 	*Resp
-	Data *GetAliasRespData `json:"data"`
+	Data *GetAliasRespData `json:"data,omitempty"`
 }
