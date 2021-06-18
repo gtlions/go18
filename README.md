@@ -45,6 +45,8 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 - XYearLast235959 返回年的最后一天的时间23:59:59.999999999
 - XZeroTime 0点时间
 
+其它的基于时间戳生成可读唯一订单号等
+
 # aliyunoss
 
 > 阿里云OSS存储相关
@@ -84,3 +86,5 @@ TODO
 # getui
 
 > 个推服务
+   
+   Android/IOS App的消息通知推送
