@@ -29,7 +29,7 @@ gos10i, golang十八般武艺(shibabanwuyi-s10i).
 
 - XMonthDayList 当前月份日期列表
 - XMonthDayCnt 当前月份天数
-- XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用，格式：200601021504050000
+- XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用，格式：20060102150405000000000
 - XChinaMonth 中国月份，「一」~「十二」月
 - XChinaWeekday 中国星期几，周「一」～「日」或星期「一」～「日」
 - XWeekdayInt 日期的本周的第『n』天，1-7，每周的第一天为周一

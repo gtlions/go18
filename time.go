@@ -28,10 +28,10 @@ func XMonthDayCnt(when time.Time) int {
 
 // XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用
 //
-// 格式 200601021504050000
+// 格式 20060102150405000000000
 //
 func XOrderNoFromNow() string {
-	ct := time.Now().Format("20060102150405.0000")
+	ct := time.Now().Format("20060102150405.000000000")
 	ct = strings.Replace(ct, ".", "", -1)
 	return ct
 }
