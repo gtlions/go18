@@ -1,4 +1,4 @@
-package gos10i
+package go18
 
 import (
 	"fmt"
@@ -9,7 +9,6 @@ import (
 // XMonthDayList 当前月份日期列表
 //
 // when 时间
-//
 func XMonthDayList(when time.Time) (dayList []string) {
 	for i := 0; i < int((XMonthLast(when).Sub(XMonthFirst(when)).Hours()/24)+1); i++ {
 		dayList = append(dayList, XMonthFirst(when).AddDate(0, 0, i).Format("2006-01-02"))
@@ -21,7 +20,6 @@ func XMonthDayList(when time.Time) (dayList []string) {
 // XMonthDayCnt 当前月份天数
 //
 // when 时间
-//
 func XMonthDayCnt(when time.Time) int {
 	return int((XMonthLast(when).Sub(XMonthFirst(when)).Hours() / 24) + 1)
 }
@@ -29,7 +27,6 @@ func XMonthDayCnt(when time.Time) int {
 // XOrderNoFromNow 基于当前时间的字符串，可作为订单号使用
 //
 // 格式 20060102150405000000000
-//
 func XOrderNoFromNow() string {
 	ct := time.Now().Format("20060102150405.000000000")
 	ct = strings.Replace(ct, ".", "", -1)
@@ -39,7 +36,6 @@ func XOrderNoFromNow() string {
 // XChinaMonth 返回日期的『n月』
 //
 // day 日期
-//
 func XChinaMonth(day time.Time) string {
 	switch day.Month() {
 	case time.January:
@@ -78,7 +74,6 @@ func XChinaMonth(day time.Time) string {
 // prefix 前缀,周|星期
 //
 // day 日期
-//
 func XChinaWeekday(prefix string, day time.Time) string {
 	switch day.Weekday() {
 	case time.Sunday:
@@ -105,7 +100,6 @@ func XChinaWeekday(prefix string, day time.Time) string {
 // 每周的第一天为周一
 //
 // t 时间
-//
 func XWeekdayInt(t time.Time) int {
 	switch t.Weekday() {
 	case time.Sunday:
@@ -130,7 +124,6 @@ func XWeekdayInt(t time.Time) int {
 // XDayLast235959 返回天的最后时间23:59:59.999999999
 //
 // t 时间
-//
 func XDayLast235959(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, t.Location())
 }
@@ -138,7 +131,6 @@ func XDayLast235959(t time.Time) time.Time {
 // XWeekFirst 返回周的第一天的时间
 //
 // t 时间
-//
 func XWeekFirst(t time.Time) time.Time {
 	return XZeroTime(t.AddDate(0, 0, -(XWeekdayInt(t) - 1)))
 }
@@ -146,7 +138,6 @@ func XWeekFirst(t time.Time) time.Time {
 // XWeekLast 返回周的最后一天的时间
 //
 // t 时间
-//
 func XWeekLast(t time.Time) time.Time {
 	return XWeekFirst(t).AddDate(0, 0, 6)
 }
@@ -154,7 +145,6 @@ func XWeekLast(t time.Time) time.Time {
 // XWeekLast235959 返回周的最后一天的时间23:59:59.999999999
 //
 // t 时间
-//
 func XWeekLast235959(t time.Time) time.Time {
 	d := XWeekFirst(t).AddDate(0, 0, 6)
 	return time.Date(d.Year(), d.Month(), d.Day(), 23, 59, 59, 999999999, d.Location())
@@ -163,7 +153,6 @@ func XWeekLast235959(t time.Time) time.Time {
 // XMonthFirst 返回月的第一天的时间
 //
 // t 时间
-//
 func XMonthFirst(t time.Time) time.Time {
 	return XZeroTime(t.AddDate(0, 0, -t.Day()+1))
 }
@@ -171,7 +160,6 @@ func XMonthFirst(t time.Time) time.Time {
 // XMonthLast 返回月的最后一天的时间
 //
 // t 时间
-//
 func XMonthLast(t time.Time) time.Time {
 	return XMonthFirst(t).AddDate(0, 1, -1)
 }
@@ -179,7 +167,6 @@ func XMonthLast(t time.Time) time.Time {
 // XMonthLast235959 返回月的最后一天的时间23:59:59.999999999
 //
 // t 时间
-//
 func XMonthLast235959(t time.Time) time.Time {
 	d := XMonthFirst(t).AddDate(0, 1, -1)
 	return time.Date(d.Year(), d.Month(), d.Day(), 23, 59, 59, 999999999, d.Location())
@@ -188,7 +175,6 @@ func XMonthLast235959(t time.Time) time.Time {
 // XYearFirst 返回年的第一天的时间
 //
 // t 时间
-//
 func XYearFirst(t time.Time) time.Time {
 	t1, _ := time.Parse("2006-01-02", t.Format("2006")+"-01-01")
 	return XZeroTime(t1)
@@ -197,7 +183,6 @@ func XYearFirst(t time.Time) time.Time {
 // XYearLast 返回年的最后一天的时间
 //
 // t 时间
-//
 func XYearLast(t time.Time) time.Time {
 	return XYearFirst(t).AddDate(1, 0, -1)
 }
@@ -205,7 +190,6 @@ func XYearLast(t time.Time) time.Time {
 // XYearLast235959 返回年的最后一天的时间23:59:59.999999999
 //
 // t 时间
-//
 func XYearLast235959(t time.Time) time.Time {
 	d := XYearFirst(t).AddDate(1, 0, -1)
 	return time.Date(d.Year(), d.Month(), d.Day(), 23, 59, 59, 999999999, d.Location())
@@ -214,7 +198,6 @@ func XYearLast235959(t time.Time) time.Time {
 // XZeroTime 0点时间
 //
 // t 时间
-//
 func XZeroTime(d time.Time) time.Time {
 	return time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, d.Location())
 }

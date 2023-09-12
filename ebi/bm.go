@@ -3,7 +3,7 @@ package ebi
 import (
 	"sync"
 
-	"github.com/gtlions/gos10i"
+	"github.com/gtlions/go18"
 )
 
 type BodyMap map[string]interface{}
@@ -27,7 +27,7 @@ func (bm BodyMap) Get(key string) string {
 	}
 	v, ok := value.(string)
 	if !ok {
-		return gos10i.X2String(value)
+		return go18.X2String(value)
 	}
 	return v
 }

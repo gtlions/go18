@@ -1,6 +1,6 @@
-# 🌿gos10i
+# 🌿go18
 
-gos10i, golang十八般武艺(shibabanwuyi-s10i).
+go18, Golang十八般武艺.
 
 ![](sources/sj.jpg)
 
@@ -86,5 +86,5 @@ TODO
 # getui
 
 > 个推服务
-   
+
    Android/IOS App的消息通知推送

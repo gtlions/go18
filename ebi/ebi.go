@@ -13,7 +13,7 @@ import (
 
 	"github.com/gogap/mahonia"
 	"github.com/gorilla/schema"
-	"github.com/gtlions/gos10i"
+	"github.com/gtlions/go18"
 )
 
 const BASEURLTest = "http://pay.uat.chinaebi.com:50080/mrpos/cashier"
@@ -24,7 +24,6 @@ const TIMEOUT = 15
 // UnifiedOrder 统一下单
 //
 // bm 提交的数据
-//
 func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) {
 	baseUrl := ""
 	baseUrl = BASEURLTest
@@ -34,7 +33,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
-	nonceStr := gos10i.XOrderNoFromNow()
+	nonceStr := go18.XOrderNoFromNow()
 	bm.Set("merchantId", c.MerchantID)
 	if bm.Get("transAmt") == "" {
 		return rsp, fmt.Errorf("缺少必要参数: [ %s ]", "transAmt")
@@ -136,7 +135,7 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 	defer resp.Body.Close()
 	rspBody, _ := ioutil.ReadAll(resp.Body)
 	s := ""
-	utf8, err := gos10i.GbkToUtf8(rspBody)
+	utf8, err := go18.GbkToUtf8(rspBody)
 	if err != nil {
 		return rsp, err
 	} else {
@@ -185,7 +184,6 @@ func (c *Client) UnifiedOrder(bm BodyMap) (rsp UnifiedOrderResponse, err error) 
 // QueryOrder 订单查询
 //
 // bm 提交的数据
-//
 func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 	baseUrl := ""
 	baseUrl = BASEURLTest
@@ -234,7 +232,7 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 	req, _ := client.PostForm(baseUrl, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
 	s := ""
-	utf8, err := gos10i.GbkToUtf8(rspBody)
+	utf8, err := go18.GbkToUtf8(rspBody)
 	if err != nil {
 		return rsp, err
 	} else {
@@ -275,7 +273,6 @@ func (c *Client) QueryOrder(bm BodyMap) (rsp QueryOrderResponse, err error) {
 // RefundOrder 订单退款
 //
 // bm 提交的数据
-//
 func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 	baseUrl := ""
 	baseUrl = BASEURLTest
@@ -285,7 +282,7 @@ func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 	if _, err := c.isInit(); err != nil {
 		return rsp, err
 	}
-	nonceStr := gos10i.XOrderNoFromNow()
+	nonceStr := go18.XOrderNoFromNow()
 	bm.Set("merchantId", c.MerchantID)
 	if bm.Get("charset") == "" {
 		bm.Set("charset", "00")
@@ -339,7 +336,7 @@ func (c *Client) RefundOrder(bm BodyMap) (rsp RefundOrderResponse, err error) {
 	req, _ := client.PostForm(baseUrl, urlValues)
 	rspBody, _ := ioutil.ReadAll(req.Body)
 	s := ""
-	utf8, err := gos10i.GbkToUtf8(rspBody)
+	utf8, err := go18.GbkToUtf8(rspBody)
 	if err != nil {
 		return rsp, err
 	} else {

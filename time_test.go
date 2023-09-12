@@ -1,4 +1,4 @@
-package gos10i
+package go18
 
 import (
 	"testing"

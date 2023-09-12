@@ -1,4 +1,4 @@
-package gos10i
+package go18
 
 import (
 	"math/rand"
@@ -8,7 +8,6 @@ import (
 // XRandomInt 生成指定长度的随机数字字符串
 //
 // length 字符串长度
-//
 func XRandomInt(length int) string {
 	str := "0123456789"
 	bytes := []byte(str)
@@ -23,7 +22,6 @@ func XRandomInt(length int) string {
 // XRandomString 生成指定长度的随机字符串
 //
 // length 字符串长度
-//
 func XRandomString(length int) string {
 	str := "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
 	bytes := []byte(str)
@@ -40,7 +38,6 @@ func XRandomString(length int) string {
 // min 最小值
 //
 // max 最大值
-//
 func XRandomIntRange(min, max int) int {
 	if min >= max || min == 0 || max == 0 {
 		return max

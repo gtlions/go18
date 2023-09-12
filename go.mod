@@ -1,6 +1,6 @@
-module github.com/gtlions/gos10i
+module github.com/gtlions/go18
 
-go 1.17
+go 1.21.1
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.4+incompatible

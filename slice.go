@@ -1,4 +1,4 @@
-package gos10i
+package go18
 
 import (
 	"fmt"
@@ -10,7 +10,6 @@ import (
 // item 元素
 //
 // parent 切片对象
-//
 func XIsInSlice(item interface{}, parent interface{}) (isExist bool, err error) {
 	t := reflect.TypeOf(parent)
 	v := reflect.ValueOf(parent)

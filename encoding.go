@@ -1,4 +1,4 @@
-package gos10i
+package go18
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 )
 
 // GbkToUtf8 字符串编码gbk->utf-8
-//
 func GbkToUtf8(s []byte) ([]byte, error) {
 	reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewDecoder())
 	d, e := ioutil.ReadAll(reader)
@@ -20,7 +19,6 @@ func GbkToUtf8(s []byte) ([]byte, error) {
 }
 
 // Utf8ToGbk 字符串编码utf-8->gbk
-//
 func Utf8ToGbk(s []byte) ([]byte, error) {
 	reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewEncoder())
 	d, e := ioutil.ReadAll(reader)

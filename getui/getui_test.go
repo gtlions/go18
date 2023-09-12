@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gtlions/gos10i"
+	"github.com/gtlions/go18"
 )
 
 // TestAuth
@@ -74,7 +74,7 @@ func TestPushToSingleCid(t *testing.T) {
 	config.baseUrl = fmt.Sprintf(bashUrl + "/" + appID)
 	config.AuthSignResp.Data.Token = "89c3ce1d72wer46ce25610e63dbcc4ffed8d62533d762bb1b5066757d588c1291d37d"
 	push := PushReq{Settings: &Settings{}, Audience: &Audience{}, PushMessage: &Message{}}
-	push.RequestID = gos10i.X2String(time.Now().UnixNano())
+	push.RequestID = go18.X2String(time.Now().UnixNano())
 	push.Settings.TTL = 3600 * 1000
 	push.Audience.Cid = []string{"71ee126s5b15e35dw20f6a92876f485bb6f"}
 	push.PushMessage = &Message{Notification: &Notification{Title: "测试推送", Body: time.Now().String(), ClickType: "url", URL: "https//:xxx"}}
