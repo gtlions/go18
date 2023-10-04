@@ -2,9 +2,36 @@ package go18
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 )
+
+// ParseDuration 解析时间间隔
+//
+// d 时间单位
+
+func ParseDuration(d string) (time.Duration, error) {
+	d = strings.TrimSpace(d)
+	dr, err := time.ParseDuration(d)
+	if err == nil {
+		return dr, nil
+	}
+	if strings.Contains(d, "d") {
+		index := strings.Index(d, "d")
+
+		hour, _ := strconv.Atoi(d[:index])
+		dr = time.Hour * 24 * time.Duration(hour)
+		ndr, err := time.ParseDuration(d[index+1:])
+		if err != nil {
+			return dr, nil
+		}
+		return dr + ndr, nil
+	}
+
+	dv, err := strconv.ParseInt(d, 10, 64)
+	return time.Duration(dv), err
+}
 
 // XMonthDayList 当前月份日期列表
 //
