@@ -30,7 +30,6 @@ type Client struct {
 // bucket: 存储空间
 //
 // object: 对象
-//
 func NewClient(endPoint, accessKeyID, accessKeySecret, bucket, object string) (client *Client) {
 	ossClient, err := oss.New(endPoint, accessKeyID, accessKeySecret)
 	if err != nil {
@@ -52,7 +51,6 @@ func NewClient(endPoint, accessKeyID, accessKeySecret, bucket, object string) (c
 // saveFile 保存文件名,文件名格式,自己可以改,建议保证唯一性
 //
 // 返回参数 saveURL 成功上传后保存路径
-//
 func (o *Client) PutFromFile(file string, saveFile string) (saveURL string, err error) {
 	bk, err := o.ossClient.Bucket(o.Bucket)
 	if err != nil {
@@ -85,7 +83,6 @@ func (o *Client) PutFromFile(file string, saveFile string) (saveURL string, err 
 // saveFile 保存文件名,文件名格式,自己可以改,建议保证唯一性
 //
 // 返回参数 saveURL 成功上传后保存路径
-//
 func (o *Client) PutFromStream(file *multipart.FileHeader, saveFile string) (saveURL string, err error) {
 	bk, err := o.ossClient.Bucket(o.Bucket)
 	if err != nil {
@@ -121,7 +118,6 @@ func (o *Client) PutFromStream(file *multipart.FileHeader, saveFile string) (sav
 // file 文件名称: upfile.txt
 //
 // 返回参数 err 错误信息
-//
 func (o *Client) DeleteFile(file string) (err error) {
 	bk, err := o.ossClient.Bucket(o.Bucket)
 	if err != nil {

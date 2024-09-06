@@ -68,7 +68,6 @@ type RespGeoDistance struct {
 // accessKey 访问Key
 //
 // secretKey 访问密钥
-//
 func Address2Geo(address, accessKey, secretKey string) (rsp RespLoc, err error) {
 	params := url.Values{}
 	Url, err := url.Parse("https://apis.map.qq.com/ws/geocoder/v1")
@@ -117,7 +116,6 @@ func Address2Geo(address, accessKey, secretKey string) (rsp RespLoc, err error) 
 // accessKey 访问Key
 //
 // secretKey 访问密钥
-//
 func GeoDistance(mode, from, to, accessKey, secretKey string) (rsp RespGeoDistance, err error) {
 	params := url.Values{}
 	Url, err := url.Parse("https://apis.map.qq.com/ws/distance/v1/matrix")

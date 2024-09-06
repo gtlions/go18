@@ -40,7 +40,6 @@ type Client struct {
 // accessKeyID 访问ID
 //
 // accessKeySecret 访问密钥
-//
 func NewClient(accessKeyID, accessKeySecret string) (client *Client) {
 	paras := make(map[string]string)
 	paras["SignatureMethod"] = "HMAC-SHA1"
@@ -67,7 +66,6 @@ func NewClient(accessKeyID, accessKeySecret string) (client *Client) {
 // templateParam 短信模板变量对应的实际值,JSON格式
 //
 // 返回参数 saveURL 成功上传后保存路径
-//
 func (s *Client) SendSms(phoneNumbers, signName, templateCode, templateParam string) (err error) {
 	timezone, err := time.LoadLocation("GMT0")
 	if err != nil {

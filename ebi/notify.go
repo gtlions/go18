@@ -13,7 +13,6 @@ import (
 // 返回参数 rsp 请求的参数
 //
 // 返回参数 err 错误信息
-//
 func ParseNotify(req *http.Request) (rsp *NotifyRequest, err error) {
 	var decoder = schema.NewDecoder()
 	rspTemp := NotifyRequest{}
@@ -35,7 +34,6 @@ func ParseNotify(req *http.Request) (rsp *NotifyRequest, err error) {
 // 返回参数 rsp 请求的参数
 //
 // 返回参数 err 错误信息
-//
 func ParseRefuncNotify(req *http.Request) (rsp *NotifyRefundRequest, err error) {
 	var decoder = schema.NewDecoder()
 	rspTemp := NotifyRefundRequest{}

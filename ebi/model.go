@@ -47,7 +47,6 @@ type Client struct {
 }
 
 // Init 电银支付客户端初始化
-//
 func (c *Client) Init() (err error) {
 	if c.MerchantID == "" {
 		return fmt.Errorf("缺少初始化参数: [ MerchantID ]")
@@ -66,7 +65,6 @@ func (c *Client) Init() (err error) {
 }
 
 // isInit 是否成功初始化
-//
 func (c *Client) isInit() (bool, error) {
 	if !c.init {
 		return c.init, fmt.Errorf("未初始化客户端")
@@ -77,7 +75,6 @@ func (c *Client) isInit() (bool, error) {
 // sign 电银支付请求数据加密、签名
 //
 // data 请求参数
-//
 func (c *Client) sign(bm BodyMap) (BodyMap, error) {
 	var (
 		err           error
@@ -117,7 +114,6 @@ func (c *Client) sign(bm BodyMap) (BodyMap, error) {
 // signDiscard 电银支付请求数据加密、签名
 //
 // data 请求参数
-//
 func (c *Client) signDiscard(data map[string]string) (map[string]string, error) {
 	var (
 		err           error
@@ -230,7 +226,6 @@ type WechatPayData struct {
 // pfxFileName 文件路径
 //
 // password 访问密码
-//
 func pkcs12DecodeAll(pfxFileName string, password string) ([]interface{}, []*x509.Certificate, error) {
 	pfxData := new([]byte)
 	if keyFile, err := ioutil.ReadFile(pfxFileName); err != nil {
