@@ -15,8 +15,6 @@ func TestWecom(t *testing.T) {
 		ToUser:     "gtlions",
 	}
 	wecom.ToUser = "gtlions"
-	wecom.GetAccessToken()
-
 	// wecom.SendText([]string{"hello world"})
 
 	msg := fmt.Sprintf("**日期** `%s`\n", time.Now())

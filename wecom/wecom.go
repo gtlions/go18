@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/gtlions/go18"
+	"time"
 )
 
 type msgContent struct {
@@ -24,20 +23,21 @@ type msgPlayload struct {
 }
 
 type RespAccessToken struct {
-	Errcode     int    `json:"errcode" yaml:"errcode" form:"errcode" gorm:"errcode"`
-	Errmsg      string `json:"errmsg" yaml:"errmsg" form:"errmsg" gorm:"errmsg"`
-	AccessToken string `json:"access_token" yaml:"access_token" form:"access_token" gorm:"access_token"`
-	ExpiresIn   int    `json:"expires_in" yaml:"expires_in" form:"expires_in" gorm:"expires_in"`
+	Errcode     int       `json:"errcode"`
+	Errmsg      string    `json:"errmsg"`
+	AccessToken string    `json:"access_token"`
+	ExpiresIn   int       `json:"expires_in"`
+	ExpiresAt   time.Time `json:"expires_at"`
 }
 type RespSendMessage struct {
 	Errcode        int    `json:"errcode"`
 	Errmsg         string `json:"errmsg"`
-	Invaliduser    string `json:"invaliduser,omitempty" yaml:"invaliduser" form:"invaliduser" gorm:"invaliduser"`
-	Invalidparty   string `json:"invalidparty,omitempty" yaml:"invalidparty" form:"invalidparty" gorm:"invalidparty"`
-	Invalidtag     string `json:"invalidtag,omitempty" yaml:"invalidtag" form:"invalidtag" gorm:"invalidtag"`
-	Unlicenseduser string `json:"unlicenseduser,omitempty" yaml:"unlicenseduser" form:"unlicenseduser" gorm:"unlicenseduser"`
-	Msgid          string `json:"msgid,omitempty" yaml:"msgid" form:"msgid" gorm:"msgid"`
-	ResponseCode   string `json:"response_code,omitempty" yaml:"response_code" form:"response_code" gorm:"response_code"`
+	Invaliduser    string `json:"invaliduser,omitempty"`
+	Invalidparty   string `json:"invalidparty,omitempty"`
+	Invalidtag     string `json:"invalidtag,omitempty"`
+	Unlicenseduser string `json:"unlicenseduser,omitempty"`
+	Msgid          string `json:"msgid,omitempty"`
+	ResponseCode   string `json:"response_code,omitempty"`
 }
 
 type Wecom struct {
@@ -83,11 +83,14 @@ func (e *Wecom) GetAccessToken() error {
 		e.RespAccessToken.Errmsg = fmt.Sprintf("get wechat access token failed with: %v", e.RespAccessToken.Errmsg)
 		return fmt.Errorf(e.RespAccessToken.Errmsg)
 	}
-	e.RespAccessToken.ExpiresIn = go18.XRandomIntRange(1, 9999)
+	e.RespAccessToken.ExpiresAt = time.Now().Add(time.Duration(e.RespAccessToken.ExpiresIn-10) * time.Second)
 	return nil
 }
 
 func (e *Wecom) SendText(msg []string) error {
+	if e.RespAccessToken == nil || e.RespAccessToken.AccessToken == "" || time.Now().After(e.RespAccessToken.ExpiresAt) {
+		e.GetAccessToken()
+	}
 	client := &http.Client{}
 	for _, v := range msg {
 		// msgSend := make_message_text(e.ToUser, e.ToParty, e.AgentID, v)
@@ -128,6 +131,9 @@ func (e *Wecom) SendText(msg []string) error {
 }
 
 func (e *Wecom) SendMD(msg []string) error {
+	if e.RespAccessToken == nil || e.RespAccessToken.AccessToken == "" || time.Now().After(e.RespAccessToken.ExpiresAt) {
+		e.GetAccessToken()
+	}
 	client := &http.Client{}
 	for _, v := range msg {
 		// msgSend := make_message_text(e.ToUser, e.ToParty, e.AgentID, v)
