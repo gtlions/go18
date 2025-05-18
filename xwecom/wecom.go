@@ -1,4 +1,4 @@
-package wecom
+package xwecom
 
 import (
 	"bytes"
